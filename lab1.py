@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 
-from lab0 import BaseMethod
+from lab0 import BaseMethod, SawToothGenerator, provide_sawtooth_generator
 
 
 class FirstBaseFunction(BaseMethod):
@@ -24,6 +24,9 @@ class FirstBaseFunction(BaseMethod):
             return 2 * x
         return 0
 
+    def provide_x(self, x):
+        self.x = x
+
     def plot_figure(self):
         plt.plot(self.x, self.y)
         plt.show()
@@ -43,10 +46,12 @@ class FirstFunctionDistribution(FirstBaseFunction):
 
 def excercise_one(n):
     tmp = FirstBaseFunction(n)
+    # tmp.x = provide_sawtooth_generator(n)
     tmp.generate()
     tmp.plot_figure()
     tmp.plot_histogram()
     tmp = FirstFunctionDistribution(n)
+    # tmp.x = provide_sawtooth_generator(n)
     tmp.generate()
     tmp.plot_figure()
     tmp.plot_histogram()
@@ -66,18 +71,20 @@ class SecondFunctionDistribution(FirstBaseFunction):
         if -1 > x:
             return 0
         if -1 < x < 0:
-            return 0.5 * pow(x, 2) + x + 0.5
+            return (0.5 * pow(x, 2)) + x + 0.5
         if 0 <= x < 1:
-            return -0.5 * pow(x, 2) + x + 0.5
+            return (-0.5 * pow(x, 2)) + x + 0.5
         return 1
 
 
-def excercise_two(n):
+def exercise_two(n):
     tmp = SecondFunction(n)
+    # tmp.x = provide_sawtooth_generator(n)
     tmp.generate()
     tmp.plot_figure()
     tmp.plot_histogram()
     tmp = SecondFunctionDistribution(n)
+    # tmp.x = provide_sawtooth_generator(n)
     tmp.generate()
     tmp.plot_figure()
     tmp.plot_histogram()
@@ -109,5 +116,8 @@ def excercise_three(n):
 
 def demo(n):
     excercise_one(n)
-    excercise_two(n)
+    exercise_two(n)
     excercise_three(n)
+
+
+exercise_two(1000)

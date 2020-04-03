@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 class BaseMethod:
     _name = ''
     input_length = 100000  #set it as default
-    y = np.zeros(shape=(1, input_length))
-    x = np.zeros(shape=(1, input_length))
+    y = np.zeros(input_length)
+    x = np.zeros(input_length)
 
     def save_figure(self):
         plt.plot(self.y)
@@ -37,15 +37,20 @@ class SawToothGenerator(BaseMethod):
     def __init__(self, name, input_length, tooth_count, start_val):
         self._name = name
         self.input_length = input_length
-        self.y = np.zeros(shape=(input_length+1, 1))
+        self.y = np.zeros(input_length)
         self.y[0] = start_val
         self._tooth_count = tooth_count
 
     def generate(self):
-        for i in range(self.input_length):
+        for i in range(self.input_length-1):
             self.y[i + 1] = \
                 self._tooth_count * self.y[i] - np.floor(self._tooth_count * self.y[i])
 
+
+def provide_sawtooth_generator(n):
+    a = SawToothGenerator(input_length=n, tooth_count=13, start_val=0.123456789123456789, name="")
+    a.generate()
+    return a.y
 #
 # n = 1000
 # x0 = 0.123456789123456789
