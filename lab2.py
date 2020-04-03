@@ -11,6 +11,9 @@ import lab1
 class ThirdLabFirsFunc(lab1.SecondFunction):
 
     def __init__(self, input_length):
+        super().__init__(input_length)
+        self.y_after_rejection = np.zeros(1)
+        self.x_after_rejection = np.zeros(1)
         self.input_length = input_length
         self.sigma = 0.4
         self.mu = 0.0
@@ -24,11 +27,29 @@ class ThirdLabFirsFunc(lab1.SecondFunction):
         count, bins, ignored = plot.hist(self.y_approx, 30, density=True)
         plot.plot(bins, 1 / (self.sigma * np.sqrt(2 * np.pi)) * np.exp(- (bins - self.mu) ** 2 / (2 * self.sigma ** 2)),
                   linewidth=2, color='r')
+        # count, bins, ignored = plot.hist(self.y, 30, density=True)
+        plot.plot(self.x, self.y, color='y')
+        # count, bins, ignored = plot.hist(self.y)
+
+        plot.show()
+
+    def reject_points(self):
+        for i in range(len(self.y)):
+            if self.y[i] > self.y_approx[i]:
+                self.y_after_rejection = np.append(self.y_after_rejection, self.y[i])
+                self.x_after_rejection = np.append(self.x_after_rejection, self.x[i])
+        # plot.plot(self.x_after_rejection, self.y_after_rejection)
+        plot.hist(self.y_after_rejection, 30, density=True)
+        # plot.hist(self.y_approx, 30, density=True)
+        plot.hist(self.y, 30, density=True)
         plot.show()
 
 
-a = ThirdLabFirsFunc(1000)
-a.plot_approx()
+a = ThirdLabFirsFunc(10000)
 a.generate()
-a.plot_figure()
-a.plot_histogram()
+# a.plot_approx()
+a.reject_points()
+# # a.plot_figure()
+# a.plot_histogram()
+
+

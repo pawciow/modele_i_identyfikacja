@@ -120,4 +120,4 @@ def demo(n):
     excercise_three(n)
 
 
-exercise_two(1000)
+# exercise_two(1000)
