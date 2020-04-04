@@ -143,7 +143,8 @@ def demo(n, y_normal, L):
 
 # mu, sigma = 0, 0.1  # mean and standard deviation
 mu, sigma = 1, 0.4  # mean and standard deviation
-L = 10
+# L = 40
+L=10
 length = 1000
 demo(length, np.random.normal(mu, sigma, length), L)
 # y = np.random.standard_cauchy(length)
