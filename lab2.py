@@ -47,13 +47,13 @@ class ThirdLabFirsFunc(lab1.SecondFunction):
         ax.hist(self.y, 30, density=True, label='Punkty przed odrzuceniem')
         ax.legend()
         plot.show()
-
-a = ThirdLabFirsFunc(10000)
-# a.provide_x(lab0.provide_sawtooth_generator(10000))
-a.generate()
-a.plot_approx()
-a.reject_points()
-# a.plot_figure()
-a.plot_histogram()
+#
+# a = ThirdLabFirsFunc(10000)
+# # a.provide_x(lab0.provide_sawtooth_generator(10000))
+# a.generate()
+# a.plot_approx()
+# a.reject_points()
+# # a.plot_figure()
+# a.plot_histogram()
 
 
