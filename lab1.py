@@ -28,12 +28,20 @@ class FirstBaseFunction(BaseMethod):
         self.x = x
 
     def plot_figure(self):
-        plt.plot(self.x, self.y)
+        plt.plot(self.x, self.y, 'ro')
         plt.show()
 
     def plot_histogram(self):
-        plt.hist(self.y)
+        plt.hist(self.y, bins='auto', density=1)
         plt.show()
+
+    def subplot_all(self):
+        fig, (ax1, ax2) = plt.subplots(1, 2)
+
+        ax1.plot(self.x, self.y, 'ro')
+        ax2.hist(self.y, bins='auto')
+        plt.show()
+
 
 
 class FirstFunctionDistribution(FirstBaseFunction):
@@ -46,16 +54,13 @@ class FirstFunctionDistribution(FirstBaseFunction):
 
 def excercise_one(n):
     tmp = FirstBaseFunction(n)
-    # tmp.x = provide_sawtooth_generator(n)
+    tmp.x = provide_sawtooth_generator(n)
     tmp.generate()
-    tmp.plot_figure()
-    tmp.plot_histogram()
+    tmp.subplot_all()
     tmp = FirstFunctionDistribution(n)
-    # tmp.x = provide_sawtooth_generator(n)
+    tmp.x = provide_sawtooth_generator(n)
     tmp.generate()
-    tmp.plot_figure()
-    tmp.plot_histogram()
-
+    tmp.subplot_all()
 
 class SecondFunction(FirstBaseFunction):
     def _function(self, x):
@@ -79,15 +84,13 @@ class SecondFunctionDistribution(FirstBaseFunction):
 
 def exercise_two(n):
     tmp = SecondFunction(n)
-    # tmp.x = provide_sawtooth_generator(n)
+    tmp.x = provide_sawtooth_generator(n)
     tmp.generate()
-    tmp.plot_figure()
-    tmp.plot_histogram()
+    tmp.subplot_all()
     tmp = SecondFunctionDistribution(n)
-    # tmp.x = provide_sawtooth_generator(n)
+    tmp.x = provide_sawtooth_generator(n)
     tmp.generate()
-    tmp.plot_figure()
-    tmp.plot_histogram()
+    tmp.subplot_all()
 
 
 class ThirdFunction(FirstBaseFunction):
@@ -106,18 +109,15 @@ class ThirdFunctionDistribution(FirstBaseFunction):
 
 def excercise_three(n):
     tmp = ThirdFunction(n)
+    tmp.x = provide_sawtooth_generator(n)
     tmp.generate()
-    tmp.plot_figure()
-    tmp.plot_histogram()
+    tmp.subplot_all()
     tmp = ThirdFunctionDistribution(n)
+    tmp.x = provide_sawtooth_generator(n)
     tmp.generate()
-    tmp.plot_figure()
-    tmp.plot_histogram()
+    tmp.subplot_all()
 
 def demo(n):
     excercise_one(n)
     exercise_two(n)
     excercise_three(n)
-
-
-# exercise_two(1000)

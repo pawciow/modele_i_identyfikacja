@@ -3,6 +3,7 @@ import matplotlib.pyplot as plot
 import math
 
 import lab1
+import lab0
 
 
 # http://pawel.wachel.staff.iiar.pwr.wroc.pl/ModelowanieLab2.pdf
@@ -26,9 +27,9 @@ class ThirdLabFirsFunc(lab1.SecondFunction):
     def plot_approx(self):
         count, bins, ignored = plot.hist(self.y_approx, 30, density=True)
         plot.plot(bins, 1 / (self.sigma * np.sqrt(2 * np.pi)) * np.exp(- (bins - self.mu) ** 2 / (2 * self.sigma ** 2)),
-                  linewidth=2, color='r')
+                  linewidth=2, color='r', label='Funkcja aproksymująca')
         # count, bins, ignored = plot.hist(self.y, 30, density=True)
-        plot.plot(self.x, self.y, color='y')
+        plot.plot(self.x, self.y, color='y', label='Funkcja podstawowa')
         # count, bins, ignored = plot.hist(self.y)
 
         plot.show()
@@ -38,18 +39,21 @@ class ThirdLabFirsFunc(lab1.SecondFunction):
             if self.y[i] > self.y_approx[i]:
                 self.y_after_rejection = np.append(self.y_after_rejection, self.y[i])
                 self.x_after_rejection = np.append(self.x_after_rejection, self.x[i])
-        # plot.plot(self.x_after_rejection, self.y_after_rejection)
-        plot.hist(self.y_after_rejection, 30, density=True)
-        # plot.hist(self.y_approx, 30, density=True)
-        plot.hist(self.y, 30, density=True)
+
+    def plot_histogram(self):
+        fig = plot.figure()
+        ax = plot.subplot(111)
+        ax.hist(self.y_after_rejection, 30, density=True, label='Punkty po odrzuceniu')
+        ax.hist(self.y, 30, density=True, label='Punkty przed odrzuceniem')
+        ax.legend()
         plot.show()
 
-
 a = ThirdLabFirsFunc(10000)
+# a.provide_x(lab0.provide_sawtooth_generator(10000))
 a.generate()
-# a.plot_approx()
+a.plot_approx()
 a.reject_points()
-# # a.plot_figure()
-# a.plot_histogram()
+# a.plot_figure()
+a.plot_histogram()
 
 

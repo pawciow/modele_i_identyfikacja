@@ -73,6 +73,7 @@ def third(n, y):
     plot.title = "Trzeci estymator"
     plot.plot(a.third_est)
     plot.show()
+
 mu, sigma = 0, 0.1 # mean and standard deviation
 len = 1000
 demo(len, np.random.normal(mu, sigma,len))

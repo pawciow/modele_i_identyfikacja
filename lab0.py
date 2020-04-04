@@ -52,12 +52,13 @@ def provide_sawtooth_generator(n):
     a.generate()
     return a.y
 #
-# n = 1000
-# x0 = 0.123456789123456789
-#
-# # ex_one_one = SawToothGenerator("Zadanie1_1_Pilozebny", n, 13, x0)
-# # ex_one_one.generate()
-# # ex_one_one.plot_histogram()
+n = 1000
+x0 = 0.13123
+
+# ex_one_one = SawToothGenerator("Zadanie1_1_Pilozebny", n, 6, x0)
+# ex_one_one.generate()
+# ex_one_one.plot_figure()
+# ex_one_one.plot_histogram()
 # # ex_one_one.save_figure()
 # #
 # # ex_one_one.plot_figure()
