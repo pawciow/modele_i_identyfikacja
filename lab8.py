@@ -9,12 +9,12 @@ def white_noise(samples):
     mean = 0
     std = 1
 
-    return np.random.uniform(mean, std, size=samples)
+    return np.random.normal(mean, std, size=samples)
 
 
 class Model:
     def __init__(self, number_of_inputs, repeats, max_int):
-        self.X = np.random.randint(max_int, size=(number_of_inputs, repeats))
+        self.X = np.random.normal(max_int, size=(number_of_inputs, repeats))
         self.Z = white_noise(number_of_inputs)
         self.a = np.random.randint(max_int, size=repeats)
         self.Y = self.X.dot(self.a) + self.Z
@@ -29,15 +29,21 @@ class Model:
         plt.legend()
         plt.show()
 
+    def plot_white_noise(self):
+        plt.plot(self.Z, label='Zakłócenia')
+
     def plot_imagesc(self):
-        covariance_matrix = np.cov(np.linalg.inv((self.X.T @ self.X)))
-        plt.imshow(covariance_matrix, extent=[0, 1, 0, 1])
+        self.covariance_matrix = np.cov(np.linalg.inv((self.X.T @ self.X)))
+        plt.imshow(self.covariance_matrix, extent=[0, 1, 0, 1])
         plt.show()
 
 
-a = Model(100, 40, 10)
-
+a = Model(100, 40, 5)
 a.estimate_least_squares()
+print((a.a))
+print((a.a_approx))
+# a.plot_white_noise()
 a.plot_all()
 a.plot_imagesc()
+print(a.covariance_matrix)
 
