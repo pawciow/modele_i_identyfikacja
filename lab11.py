@@ -8,8 +8,8 @@ class Model:
         self.x = np.linspace(0,1,response_length)
         self.v = np.zeros(response_length)
         self.N = response_length
-        # self.e = np.zeros(response_length)
-        self.e = np.random.uniform(0, 1, self.N)
+        self.e = np.zeros(response_length)
+        # self.e = np.random.uniform(0, 1, self.N)
         self.a = a
         self.b = b
 
@@ -36,31 +36,61 @@ class Model:
             self.y[i] = self.Y(i)
 
     def mnk(self):
-        self.o = np.vstack( (self.U[1:], self.y[:-1]) ).T
+        L = 1000 # from task nr. 5
+        sum_error = np.array([0, 0], dtype=float)# from task nr. 5
+        params = np.array([self.a, self.b])
 
-        self.tmp_z = self.e[1:] - self.e[:-1].dot(self.a)
-        self.tmp_y = self.y[:-1] + self.tmp_z
+        for i in range(L):
+            self.e = np.random.uniform(0, 1, self.N)
+            self.Phi = np.vstack( (self.U[1:], self.y[:-1]) ).T
 
-        approx = np.linalg.inv(self.o.T @ self.o) @ self.o.T @ self.tmp_y
-        print('A = {}, B = {}'.format(self.a, self.b))
-        print(approx)
-        retun approx
+            self.tmp_z = self.e[1:] - self.e[:-1].dot(self.a) 
+            self.tmp_y = self.Phi @ params + self.tmp_z
+
+            approx = np.linalg.inv(self.Phi.T @ self.Phi) @ self.Phi.T @ self.tmp_y
+            sum_error += (approx - params)**2
+            # print('A = {}, B = {}'.format(self.a, self.b))
+            print(approx)
+            # plt.plot(L, sum_error[1]/L)
+            # print(sum_error[0]/L)
+        # print(sum_error)
+        print(sum_error/L)
+
+        # plt.show()
+
+        # retun approx
+
+    def instrumental_variables(self):
+        self.psi = np.vstack( (self.U[1:], self.v[:-1]) ).T
+        self.Phi = np.vstack( (self.U[1:], self.y[:-1]) ).T
+
+        estimation = np.linalg.inv( self.psi.T @ self.Phi ) @ self.psi.T @ self.y[:-1]
+        print(estimation)
 
 samples = 10000
 singal = np.random.uniform(0, 1, samples)
 a = Model(response_length=samples, a=0.5, b=2)
 a.calculate_response(singal)
-# a.plot_response('Odpowiedź impulsowa')
 a.mnk()
+# a.instrumental_variables()
+# a.plot_response('Odpowiedź impulsowa')
+# a.mnk()
 # plt.hist(a.U, label='Histogram wejścia U_n')
 # plt.legend()
 # plt.show()
-# plt.hist(a.tmp_y, label='Histogram wyjścia Y_n')
+# plt.hist(a.y, label='Histogram wyjścia Y_n')
 # plt.legend()
 # plt.show()
-# plt.hist(a.tmp_z, label='Histogram szumu Z')
+# plt.hist(a.e, label='Histogram szumu Z')
 # plt.legend()
 # plt.show()
-# plt.scatter(a.U[:-1], a.tmp_y, label='Wyjście Y_n')
+# plt.scatter(a.U, a.y, label='Wyjście Y_n')
+# plt.legend()
+# plt.show()
+#
+# plt.plot(a.v, label='Wykres niezaszumionego V')
+# plt.legend()
+# plt.show()
+# plt.hist(a.v, label='Histogram niezaszumionego V')
 # plt.legend()
 # plt.show()
