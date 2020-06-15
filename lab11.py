@@ -8,19 +8,10 @@ class Model:
         self.x = np.linspace(0,1,response_length)
         self.v = np.zeros(response_length)
         self.N = response_length
-        self.e = np.zeros(response_length)
-
+        # self.e = np.zeros(response_length)
+        self.e = np.random.uniform(0, 1, self.N)
         self.a = a
         self.b = b
-
-    def calculate_impulse_response(self):
-        for i in range(self.N):
-            if i == 0:
-                u = 1
-            else:
-                u = 0
-            self.v[i] = self.V(u, i)
-            self.y[i] = self.Y(i)
 
     def V(self, u, i):
         if (i - 1) < 0:
@@ -37,21 +28,39 @@ class Model:
     def plot_response(self, my_label):
         my_label += '(a={}, b={})'.format(self.a, self.b)
         plt.plot(self.x, self.y, label=my_label)
-    #
-    # def
-    # def mnk(self):
-    #     for i in range(self.N - 1):
-    #         o = np.append([self.u[i+i], self.y[i]])
-    #     # retun approx
 
+    def calculate_response(self, U):
+        self.U = U
+        for i in range(self.N):
+            self.v[i] = self.V(U[i], i)
+            self.y[i] = self.Y(i)
 
+    def mnk(self):
+        self.o = np.vstack( (self.U[1:], self.y[:-1]) ).T
 
-a = Model(response_length=10, a=0.5, b=2)
-a.calculate_impulse_response()
-a.plot_response('Odpowiedź impulsowa')
-a.mnk()
-# a = Model(response_length=10, a=-0.3, b=3)
-# a.calculate_impulse_response()
+        self.tmp_z = self.e[1:] - self.e[:-1].dot(self.a)
+        self.tmp_y = self.y[:-1] + self.tmp_z
+
+        approx = np.linalg.inv(self.o.T @ self.o) @ self.o.T @ self.tmp_y
+        print('A = {}, B = {}'.format(self.a, self.b))
+        print(approx)
+        retun approx
+
+samples = 10000
+singal = np.random.uniform(0, 1, samples)
+a = Model(response_length=samples, a=0.5, b=2)
+a.calculate_response(singal)
 # a.plot_response('Odpowiedź impulsowa')
+a.mnk()
+# plt.hist(a.U, label='Histogram wejścia U_n')
+# plt.legend()
+# plt.show()
+# plt.hist(a.tmp_y, label='Histogram wyjścia Y_n')
+# plt.legend()
+# plt.show()
+# plt.hist(a.tmp_z, label='Histogram szumu Z')
+# plt.legend()
+# plt.show()
+# plt.scatter(a.U[:-1], a.tmp_y, label='Wyjście Y_n')
 # plt.legend()
 # plt.show()
