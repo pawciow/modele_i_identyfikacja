@@ -83,19 +83,49 @@ class Model:
         plt.show()
 
     def instrumental_variables(self):
-        self.psi = np.vstack((self.U[1:], self.v[:-1])).T
-        self.Phi = np.vstack((self.U[1:], self.y[:-1])).T
 
-        estimation = np.linalg.inv(self.psi.T @ self.Phi) @ self.psi.T @ self.y[:-1]
-        print(estimation)
+        L = 1000  # from task nr. 5
+        sum_error = np.array([0, 0], dtype=float)  # from task nr. 5
+        params = np.array([self.a, self.b])
+
+        x_for_plot = np.linspace(0, L, L)
+        approximations_for_a = np.zeros(L)
+        approximations_for_b = np.zeros(L)
+
+        error_in_iterations_for_a = np.zeros(L)
+        error_in_iterations_for_b = np.zeros(L)
+
+        for i in range(L):
+            self.e = np.random.uniform(0, 1, self.N)
+
+
+            self.Phi = np.vstack((self.U[1:], self.y[:-1])).T
+            self.psi = np.vstack((self.U[1:], self.v[:-1])).T
+
+            self.tmp_z = self.e[1:] - self.e[:-1].dot(self.a)
+            self.tmp_y = self.Phi @ params + self.tmp_z
+
+            approx = np.linalg.inv(self.psi.T @ self.Phi) @ self.psi.T @ self.tmp_y
+
+            sum_error += (approx - params) ** 2
+
+            approximations_for_a[i] = approx[0]
+            approximations_for_b[i] = approx[1]
+            error_in_iterations_for_a[i] = sum_error[0] / i
+            error_in_iterations_for_b[i] = sum_error[1] / i
+
+        print(sum_error / L)
+        self.plot_iterations(approximations_for_a, approximations_for_b, error_in_iterations_for_a,
+                             error_in_iterations_for_b, x_for_plot)
+        print(approx)
 
 
 samples = 10000
 singal = np.random.uniform(0, 1, samples)
 a = Model(response_length=samples, a=0.5, b=2)
 a.calculate_response(singal)
-a.mnk()
-# a.instrumental_variables()
+# a.mnk()
+a.instrumental_variables()
 # a.plot_response('Odpowiedź impulsowa')
 # a.mnk()
 # plt.hist(a.U, label='Histogram wejścia U_n')
